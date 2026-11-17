@@ -12,15 +12,16 @@ pode prosseguir dentro do wsl com o seguinte comando:
 ```bash
 https://mirror.stream.centos.org/SIGs/10-stream/altimages/images/wsl/x86_64/CentOS-Stream-Image-WSL-Base.x86_64-10-202604020202.wsl
 ```
-Esta instalação do CentOs é uma das distribuições que suportam a ferramenta Verd e VCS que serão utilizadas nas atividades. Caso
+Esta é a instalação do CentOs uma das distribuições que suportam a ferramentas Verdi e VCS que serão utilizadas nas atividades. Caso
 haja difiuldade para essa instalação específica consultar o manual de instalação e as distribuições disponíveis da ferramenta dentro 
 da Synopsys.
 
 2. Instalar a imagem:
 
-   ```bash
+```bash
 wsl --install --from-file 'C:\Users\55929\Downloads\CentOS-Stream-Image-WSL-Base.x86_64-10-202604020202.wsl' --name CS10
 ```
+
 3. Após as instalações:
 
  ```bash
@@ -45,10 +46,69 @@ Após essas instalações podemos prosseguir para baixar os sarquivos da Synopsy
    Por exemplo: sftp andresouza@eft.synopsys.com
    ```
 
-   Posteriormente irá pedir sua senha, está é a que você utiliza para entrar na Synopsys.
+   - Posteriormente irá pedir sua senha, está é a que você utiliza para entrar na Synopsys.
+   - Troque para o seu usúario no sftp.
 
  6. Depois no prompt do sftp, entre com os seguintes comandos:
 
+
+```bash
+cd site58898
+cd MyProducts
+cd rev/installer_v5.9
+get *
+Enter "quit" to log off the server
+   ```
+A informação do site "58898" consta nas informações coletadas pela synopsys, se estiver com duvidas consultar dentro do seu acesso na 
+plataforma.
+Obs.: Você pode verificar todas as versões das ferramentas dentro da pasta rev.
+- Este processo demora um pouco.
+  
+Após isso temos o instalador.
+
+7 . Mudando as permissões para podermos executar:
+
+ ```bash
+chmod 755 SynopsysInstaller_v5.9.run
+ ```
+
+8. Agora podemos instalar o programa:
+
+ ```bash
+./SynopsysInstaller_v5.9.run
+ ```
+
+ - Quando pedir o diretório coloque:
+
+ ```bash
+
+/usr/synopsys/installer
+ ```
+
+- Execute o comando:
+ ```bash
+sudo chmod -vR 777 /usr/synopsys
+ ```
+9. E por fim, inclua no final do ~/.bashrc as seguintes linhas:
+
+ #Configuração das ferramentas Synopsys
+ 
+```bash
+export QT_XCB_GL_INTEGRATION=none
+export QT_NO_FT_CACHE=1
+
+export SNPSLMD_LICENSE_FILE=27020@54.164.141.136
+
+PATH=/usr/synopsys/installer:$PATH
+```
+
+Saindo da edição do bash, faça o comando:
+```bash
+echo "54.164.141.136 ip-172-31-83-200" | sudo tee -a /etc/hosts
+```
+10. Depois podemos fazer o download das ferramentas pra instalar, no exemplo estou instalando uma de DV:
+
+Por exemplo: sftp andresouza@eft.synopsys.com
 
 ```bash
 cd site58898
@@ -57,12 +117,21 @@ cd rev/verdi_vY-2026.03
 Enter "ls" or "dir" to see the list of product files
 get *
 Enter "quit" to log off the server
-   ```
-A informação do site "58898" consta nas informações coletadas pela synopsys, se duvida consultar dentro do seu acesso na 
-plataforma.
-Obs.: Você pode verificar todas as versões das ferramentas dentro da pasta rev.
+```
+-Este processo demora um pouco a depender de espaço e da velocidade da internet.
 
-Após isso temos o instalador.
+11. Agora iremos fazer a instalação.
+```bash
+sudo installer -gui
+```
+E basta seguir as janelas.
 
+12. Ao final inclua a seguinte linha no bash:
+```bash
+PATH=/usr/synopsys/scl/2025.03-SP2/linux64/bin:/usr/synopsys/syn/Y-2026.03/bin:/usr/synopsys/syn/Y-2026.03/linux64/syn/bin/:/usr/synopsys/installer:$PATH
+```
+```bash
+/usr/synopsys/installer/installer -gui
+```
 
 
